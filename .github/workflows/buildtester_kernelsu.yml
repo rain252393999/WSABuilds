@@ -168,12 +168,12 @@ jobs:
         run: echo "DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
         shell: bash
 
-      - name: Pass to Windows 💸
-        uses: actions/cache/save@v6
+
+      - name: Upload WSA Build Artifact 📦
+        uses: actions/upload-artifact@v4
         with:
+          name: WSA_Build_Output
           path: MagiskOnWSA/output
-          key: ${{ steps.wsa.outputs.artifact }}-${{ steps.date.outputs.date }}
-          enableCrossOsArchive: true
 
     outputs:
       artifact: ${{ steps.wsa.outputs.artifact }}
@@ -189,13 +189,12 @@ jobs:
       - name: Checkout ♻️
         uses: actions/checkout@v7
 
+     
       - name: Download built artifact ⌛
-        uses: actions/cache/restore@v6
+        uses: actions/download-artifact@v4
         with:
+          name: WSA_Build_Output
           path: output
-          key: ${{ needs.build.outputs.artifact }}-${{ needs.build.outputs.date }}
-          enableCrossOsArchive: true
-          fail-on-cache-miss: true
 
       - name: Merge language and density resources 🧙🏻‍♂️
         run: |
